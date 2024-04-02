@@ -1,0 +1,16 @@
+---
+- name: Uninstall Apache HTTP Server from CentOS 7
+  hosts: server1
+  become: true
+  tasks:
+    - name: Stop Apache HTTPd service
+      service:
+        name: httpd  # Corrected service name for Apache HTTPd
+        state: stopped
+
+    - name: Uninstall Apache HTTPd package
+      yum:
+        name: httpd  # Corrected package name for Apache HTTPd
+        state: absent
+
+

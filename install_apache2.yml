@@ -1,0 +1,53 @@
+---
+- name: This playbook installs Apache HTTP Server
+  hosts: all
+  become: true
+  tasks:
+    - name: Install apache2 on Debian
+      apt:
+        name: apache2
+        state: present
+      when: ansible_os_family == "Debian"
+
+    - name: Start Apache service on Debian
+      service:
+        name: apache2
+        state: started
+      when: ansible_os_family == "Debian"
+
+    - name: Install httpd on Red Hat
+      yum:
+        name: httpd
+        state: present
+      when: ansible_os_family == "Redhat"
+
+    - name: Start httpd service on Red Hat
+      service:
+        name: httpd
+        state: started
+      when: ansible_os_family == "Redhat"
+
+    - name: Ensure httpd service is enabled
+      service:
+        name: httpd
+        enabled: yes
+      when: ansible_os_family == "Redhat"
+
+    - name: Disable SELinux
+      package:
+        name: policycoreutils-python
+        state: present
+      when: ansible_os_family == "Redhat"
+
+    - name: Disable SELinux
+      selinux:
+        state: disabled
+      when: ansible_os_family == "Redhat"
+
+    - name: copy index.html
+      copy:
+        src: /home/wahid/ansible/index.html
+        dest: /var/www/html
+        mode: 0666
+      when: ansible_os_family == "Redhat"
+

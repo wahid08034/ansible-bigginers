@@ -1,0 +1,5 @@
+[server1]
+192.168.1.116 ansible_user=root
+
+[server2]
+192.168.1.122 ansible_user=wahid

@@ -1,0 +1,14 @@
+---
+- name: Uninstall Apache2 from Debian
+  hosts: server2
+  become: true
+  tasks:
+    - name: stop apache2 from debian
+      service:
+        name: apache2
+        state: stopped
+
+    - name: uninstall apache2 from debian
+      apt:
+        name: apache2
+        state: absent
