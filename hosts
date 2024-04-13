@@ -3,3 +3,6 @@
 
 [server2]
 192.168.1.122 ansible_user=wahid
+
+[db]
+192.168.1.116 ansible_user=root

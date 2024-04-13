@@ -13,27 +13,26 @@
         name: nginx
         state: present
 
-    - name: Stop NGINX service
-      service:
-        name: nginx
-        state: stopped
-
-    - name: Update NGINX configuration to listen on port 8080
-      replace:
+    - name: Update nginx port from 80 to 8080
+      lineinfile:
         path: /etc/nginx/nginx.conf
-        regexp: 'listen\s+80;'
-        replace: 'listen 8080;'
-      notify: Restart NGINX
+        regexp: '^Listen '
+        insertafter: '^Listen '
+        line: Listen 8080
 
-    - name: Start NGINX service
-      service:
-        name: nginx
-        state: started
-        enabled: yes
-
-  handlers:
-    - name: Restart NGINX
-      service:
+    - name: restart nginx
+      systemd:
         name: nginx
         state: restarted
 
+    - name: firewalld
+      firewalld:
+        port: 8080/tcp
+        state: enabled
+        permanant: true
+
+    - name: firewalld restart
+      systemd:
+        name: firewalld
+        state: restarted
+  

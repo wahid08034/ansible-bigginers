@@ -21,6 +21,13 @@
         state: present
       when: ansible_os_family == "Redhat"
 
+    - name: Update apache port from 80 to 8080
+      lineinfile:
+        path: /etc/httpd/conf/httpd.conf
+        regexp: '^Listen '
+        insertafter: '^Listen '
+        line: Listen 8080
+
     - name: Start httpd service on Red Hat
       service:
         name: httpd

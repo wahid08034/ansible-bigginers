@@ -1,0 +1,8 @@
+---
+- hosts: all
+  become: true
+  vars:
+    ansible_become_pass: w01710379914
+    var_node: /tmp
+  roles:
+      - mongodb

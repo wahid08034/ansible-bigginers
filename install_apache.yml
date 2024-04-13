@@ -1,26 +1,17 @@
 ---
-- name: Install and enable Apache HTTP Server (httpd) on CentOS 7
+- name: Install apache httpd on Centoes 7
   hosts: server1
   become: true
   tasks:
-    - name: Install httpd package
+    - name: install apache package
       yum:
         name: httpd
         state: present
 
-    - name: copy file controller to target host
-      copy:
-        src: /home/wahid/ansible
-        dest: /var/www/html/index.html
-        owner: apache
-        group: root
-        mode: 0755
-      
-    - name: Enable and start httpd service
+    - name: httpd service start
       systemd:
         name: httpd
-        state: started
-        enabled: yes
+        state: restarted
 
     - name: Update apache port from 80 to 8080
       lineinfile:
@@ -28,19 +19,18 @@
         regexp: '^Listen '
         insertafter: '^Listen '
         line: Listen 8080
-     
-    - name: apache restart 
+
+    - name: restart apache port 8080
       systemd:
         name: httpd
         state: restarted
 
-    - name: firewalld
+    - name: open firewalld port for apache
       firewalld:
         port: 8080/tcp
         state: enabled
-        permanent: true
 
-    - name: firewalld
+    - name: start firewalld for apache service
       systemd:
         name: firewalld
         state: restarted
